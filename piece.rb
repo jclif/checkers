@@ -8,10 +8,12 @@ class Piece
     @basis = color == :white ? [[1, -1], [1, 1]] : [[-1, -1], [-1, 1]]
   end
 
-  def slide_moves
+  def slide_moves(board)
     moves =[]
     basis.each do |base|
-      moves << base if board[base].nil? && on_board?(base)
+      summed_end = [pos, base].transpose.map { |x| x.reduce(:+) }
+      summed_move = [pos, summed_end]
+      moves << summed_move if board[summed_end].nil? && on_board?(summed_end)
     end
 
     moves

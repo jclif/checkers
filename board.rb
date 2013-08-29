@@ -33,7 +33,7 @@ class Board
     grid.each_with_index do |row, i|
       print " #{8 - i} "
       row.each_with_index do |piece, j|
-        background = (i + j).even? ? :red : :grey
+        background = (i + j).odd? ? :red : :grey
         if piece
           print "#{piece} ".colorize(color: piece.color, background: background)
         else
@@ -49,7 +49,6 @@ class Board
     # then calls perform move against with move minus the first coord 
     # i.e. perform_move(move[1..-1] 
     if (move[0].first - move[1].first).abs == 2 # it jumped!
-      debugger
       # this looks crazy, but im just setting the coord between
       # them to nil -.-
       mid = [(move[0].first + move[1].first) / 2, (move[0][1] + move[1][1]) / 2]
@@ -60,5 +59,24 @@ class Board
     self[move[0]] = nil
     perform_move(move[1..-1]) if move.length > 2 # consecutive moves
   end
+
+  def valid?(move, current_player) # [[x, y], [x, y],...]
+    # iterate over board, grabbing each pieces sliding and jumping moves
+    # the jumping moves will be tricky, because the  peice that jumped
+    # will have to have the jumping moves at that position grabbed, and 
+    # etc
+    legal_moves = []
+
+    grid.each do |row|
+      row.each do |square|
+        if square && square.color == current_player
+          legal_moves.concat(square.slide_moves(self))
+        end
+      end
+    end
+   
+    legal_moves.include?(move)
+  end
+
 
 end

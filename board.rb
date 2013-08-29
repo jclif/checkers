@@ -45,9 +45,6 @@ class Board
   end
 
   def perform_move(move) # [[5, 0], [3, 2], [1, 0]]
-    # moves piece from move[0] to move[1] and deletes if jump,
-    # then calls perform move against with move minus the first coord 
-    # i.e. perform_move(move[1..-1] 
     if (move[0].first - move[1].first).abs == 2 # it jumped!
       # this looks crazy, but im just setting the coord between
       # them to nil -.-
@@ -75,7 +72,18 @@ class Board
       end
     end
    
-    legal_moves.include?(move)
+    attack_moves = []
+
+    #get attack_moves
+    grid.each do |row|
+      row.each do |square|
+        if square && square.color == current_player
+          attack_moves.concat(square.jump_moves(self))
+        end
+      end
+    end
+
+    attack_moves == [] ? legal_moves.include?(move) : attack_moves.include?(move)
   end
 
 

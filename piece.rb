@@ -9,7 +9,7 @@ class Piece
   end
 
   def slide_moves(board)
-    moves =[]
+    moves = []
     basis.each do |base|
       summed_end = [pos, base].transpose.map { |x| x.reduce(:+) }
       summed_move = [pos, summed_end]
@@ -21,10 +21,13 @@ class Piece
 
   def jump_moves(board)
     moves = []
-    basis.each do |base| 
-      if board[base] && board[base].color != color
-        coord = base.collect { |n| n * 2 }
-        moves << coords if on_board?(dir)
+    basis.each do |base|
+      diag_piece_pos = [pos, base].transpose.map { |x| x.reduce(:+) }
+      if board[diag_piece_pos] && board[diag_piece_pos].color != color
+        new_base = base.collect { |n| n * 2 }
+        summed_end = [pos, new_base].transpose.map { |x| x.reduce(:+) }
+        summed_move = [pos, summed_end]
+        moves << summed_move if board[summed_end].nil? && on_board?(summed_end)
       end
     end
 

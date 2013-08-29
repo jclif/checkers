@@ -1,4 +1,5 @@
 require 'colorize'
+require 'yaml/store'
 
 class Board
   attr_accessor :grid
@@ -86,5 +87,8 @@ class Board
     attack_moves == [] ? legal_moves.include?(move) : attack_moves.include?(move)
   end
 
-
+  def duplicate
+    yamlized_board = self.to_yaml
+    YAML::load(yamlized_board)
+  end
 end

@@ -53,28 +53,32 @@ end
 
 if __FILE__ == $0
   c = CheckersGame.new
+  #c.play
+  c.board.perform_move([[5, 6], [4, 5]])
+  c.board.render
+  c.switch_turns
+  c.board.perform_move([[2, 5], [3, 4]])
+  c.board.render
+  c.switch_turns
+  c.board.perform_move([[4, 5], [3, 6]])
+  c.board.render
+  c.switch_turns
+  c.board.perform_move([[1, 6], [2, 5]])
+  c.board.render
+  c.switch_turns
+  c.board.perform_move([[6, 5], [5, 6]])
+  c.board.render
+  c.switch_turns
+  c.board.perform_move([[5, 0], [4, 1]])
+  c.board.render
+  c.switch_turns
+  c.board.perform_move([[4,1], [3, 0]])
+  c.board.render
+  c.switch_turns
+  # 2 move chain
+  #c.board.perform_move([[2, 5], [4, 7], [6, 5]])
+  #c.board.render
+  #c.switch_turns
   c.play
-  #c.turn([[5, 6], [4, 5]])
-  #c.board.render
-  #c.switch_turns
-  #c.turn([[2, 5], [3, 4]])
-  #c.board.render
-  #c.switch_turns
-  #c.turn([[4, 5], [3, 6]])
-  #c.board.render
-  #c.switch_turns
-  #c.turn([[1, 6], [2, 5]])
-  #c.board.render
-  #c.switch_turns
-  #c.turn([[6, 5], [5, 6]])
-  #c.board.render
-  #c.switch_turns
-  #c.turn([[5, 0], [4, 1]])
-  #c.board.render
-  #c.switch_turns
-  ## 2 move chain
-  #c.turn([[2, 5], [4, 7], [6, 5]])
-  #c.board.render
-  #c.switch_turns
 
 end

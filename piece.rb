@@ -1,3 +1,5 @@
+require './tree_node.rb'
+
 class Piece
   attr_accessor :color, :pos, :unicode, :basis
 
@@ -19,7 +21,7 @@ class Piece
     moves
   end
 
-  def jump_moves(board)
+  def naive_jump_moves(board)
     moves = []
     basis.each do |base|
       diag_piece_pos = [pos, base].transpose.map { |x| x.reduce(:+) }
@@ -27,27 +29,52 @@ class Piece
         new_base = base.collect { |n| n * 2 }
         summed_end = [pos, new_base].transpose.map { |x| x.reduce(:+) }
         summed_move = [pos, summed_end]
-        if on_board?(summed_end) && board[summed_end].nil?
-          moves << summed_move  
-          summed_move_chain = get_summed_move_chain
-          moves.concat(new_jump_moves)
-        end
+        moves.concat(summed_move) if board[summed_end].nil? && on_board?(summed_end)
       end
     end
 
     moves
   end
 
-  def get_summed_move_chains(board, summed_moved)
-    new_board = board.duplicate
-    new_board.perform_move(summed_move)
-    new_jump_moves = new_board[summed_end].jump_moves(new_board)
-    unless new_jump_moves == []
-      debugger
-      new_jump_moves.map! do |move|
-        move.unshift(summed_move)
+  def jump_moves(board)
+    # using TreeNode, create a tree with the value being a hash of its board and move
+    # once the tree is created, traverse the tree and find any node that doesn't have any children
+    # trace the path from this node until it finds nil, and append this path to moves.
+    parent = build_tree(board)
+    
+    traverse_tree(parent)
+  end
+
+  def build_tree(board)
+    
+    node_hash = {board: board, pos: self.pos}
+    parent = TreeNode.new(node_hash)
+    considered_nodes = [parent]
+
+    until considered_nodes == []
+      current = considered_nodes.shift
+      curr_board = current[:board]
+      curr_pos = current[:pos]
+      curr_piece = curr_board[curr_pos]
+      next_moves = curr_piece.naive_jump_moves(curr_board)
+
+      next_moves.each do |move|
+        next_board = curr_board.perform_move(move)
+        node_hash = {board: next_board, pos: move[1]}
+        next_node = TreeNode.new(node_hash, current)
+        considered_nodes << next_node
       end
     end
+
+    return parent
+  end
+
+  def traverse_tree(parent)
+    leaves = parent.dfs { |x| x.children.nil? }
+
+    debugger
+    return moves
+  end
 
   def on_board?(pos)
     pos.all?{ |coord| coord.between?(0, 7) }

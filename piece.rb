@@ -46,6 +46,7 @@ class Piece
   end
 
   def build_tree(board)
+    debugger
     
     node_hash = {board: board, pos: self.pos}
     parent = TreeNode.new(node_hash)
@@ -72,7 +73,6 @@ class Piece
   def traverse_tree(parent)
     leaves = TreeNode.dfs(parent) { |x| x.children.nil? }
 
-    debugger
     return moves
   end
 

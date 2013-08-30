@@ -24,7 +24,7 @@ class TreeNode
 
   def self.dfs(node, target=nil, &block)
     found = []
-    if block_given? && block.call(node.value)
+    if block_given? && block.call(node)
       found << node
     elsif node.value == target
       found << node
@@ -46,7 +46,7 @@ class TreeNode
     until current_nodes == []
       considered = current_nodes.shift
       if block_given?
-        if block.call(considered.value)
+        if block.call(considered)
           found << considered
         end
       else

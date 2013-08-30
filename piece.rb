@@ -53,8 +53,8 @@ class Piece
 
     until considered_nodes == []
       current = considered_nodes.shift
-      curr_board = current[:board]
-      curr_pos = current[:pos]
+      curr_board = current.value[:board]
+      curr_pos = current.value[:pos]
       curr_piece = curr_board[curr_pos]
       next_moves = curr_piece.naive_jump_moves(curr_board)
 
@@ -70,7 +70,7 @@ class Piece
   end
 
   def traverse_tree(parent)
-    leaves = parent.dfs { |x| x.children.nil? }
+    leaves = TreeNode.dfs(parent) { |x| x.children.nil? }
 
     debugger
     return moves

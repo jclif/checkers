@@ -3,7 +3,7 @@ require './player.rb'
 require './piece.rb'
 require './move_parser.rb'
 
-require 'debugger';debugger
+require 'debugger'
 
 class CheckersGame
   include MoveParser
